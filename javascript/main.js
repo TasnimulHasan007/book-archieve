@@ -27,8 +27,7 @@ const loadBooks = () => {
 // Showing the results
 const showBooks = (books) => {
 	// Clean up
-	searchStatus.innerText = `${books.numFound} Results found`;
-	searchStatus.style.display = 'block';
+
 	spinner.style.display = 'none';
 	resultsContainer.innerHTML = '';
 	// Show results
@@ -45,7 +44,7 @@ const showBooks = (books) => {
 		if (!book.author_name) {
 			bookAuthor = ' ';
 		} else {
-			bookAuthor = `by ${book.author_name[0]}`;
+			bookAuthor = `by <span class="text-danger fw-bold">${book.author_name[0]}</span>`;
 		}
 		// First pushlish year
 		let publishYear = `First published in ${book.first_publish_year}`;
@@ -69,9 +68,8 @@ const showBooks = (books) => {
                 <img src="${coverUrl}" class="card-img-top book-cover" alt="..." />
                 <div class="card-body">
                     <h5 class="card-title">${book.title}</h5>
-                    <p class="text-danger fw-bold mb-1">${bookAuthor}</p>
+                    <p class="mb-1">${bookAuthor}</p>
                     <small class="text-secondary">${publishYear}</small>
-                    <br>
                     <small class="text-primary">${publisher}</small>
                 </div>
             </div>
@@ -79,4 +77,11 @@ const showBooks = (books) => {
 		// appending to the parent container
 		resultsContainer.appendChild(card);
 	});
+	// Result Status
+	if (books.numFound === 0) {
+		searchStatus.innerText = 'No result found';
+	} else {
+		searchStatus.innerText = `Showing ${resultsContainer.childNodes.length} of ${books.numFound} Results`;
+	}
+	searchStatus.style.display = 'block';
 };
