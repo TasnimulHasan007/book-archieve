@@ -17,7 +17,7 @@ const loadBooks = () => {
 		spinner.style.display = 'block';
 		resultsContainer.innerHTML = '';
 		// Fetching data
-		const url = `http://openlibrary.org/search.json?q=${searchText}`;
+		const url = `https://openlibrary.org/search.json?q=${searchText}`;
 		fetch(url)
 			.then((res) => res.json())
 			.then((data) => showBooks(data));
@@ -40,10 +40,12 @@ const showBooks = (books) => {
 			coverUrl = '../images/cover-demo.jpg';
 		}
 		// Book Author
-		let bookAuthor = `by ${book.author_name}`;
+		let bookAuthor;
 
-		if (!bookAuthor) {
+		if (!book.author_name) {
 			bookAuthor = ' ';
+		} else {
+			bookAuthor = `by ${book.author_name[0]}`;
 		}
 		// First pushlish year
 		let publishYear = `First published in ${book.first_publish_year}`;
@@ -52,17 +54,19 @@ const showBooks = (books) => {
 			publishYear = ' ';
 		}
 		// Publisher
-		let publisher = `Publisher: ${book.publisher}`;
+		let publisher;
 
 		if (!book.publisher) {
 			publisher = ' ';
+		} else {
+			publisher = `Publisher: ${book.publisher[0]}`;
 		}
 		// Creating Result Card
 		const card = document.createElement('div');
 		card.classList.add('col');
 		card.innerHTML = `
             <div class="card h-100">
-                <img src="${coverUrl}" class="card-img-top" alt="..." />
+                <img src="${coverUrl}" class="card-img-top book-cover" alt="..." />
                 <div class="card-body">
                     <h5 class="card-title">${book.title}</h5>
                     <p class="text-danger fw-bold mb-1">${bookAuthor}</p>
